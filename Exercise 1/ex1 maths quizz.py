@@ -4,8 +4,8 @@ import random
 from PIL import Image, ImageTk, ImageSequence  # for GIF animation
 
 # Color Scheme
-BG_COLOR = "#ff55ad"  # Light Neon Pink
-HEADER_COLOR = "#4a90e2"  # Bright Blue
+BG_COLOR = "#ff76bd"  # Light Neon Pink
+HEADER_COLOR = "#003bfc"  # Bright Blue
 BUTTON_COLOR = "#5cb85c"  # Success Green
 BUTTON_HOVER = "#4cae4c"  # Darker Green
 DANGER_COLOR = "#d9534f"  # Red
@@ -20,10 +20,11 @@ LIGHT_TEXT = "#ffffff"  # White
 def show_start_screen():
     clear_window()
 
-    global gif_frames, gif_index, gif_label
+    global gif_frames, gif_index, gif_label, animation_id
+    animation_id = None
 
     gif_frames = []
-    gif = Image.open("start screen.gif")  # GIF file
+    gif = Image.open("Exercise 1\start screen.gif")  # GIF file
 
     # Load GIF frames
     for frame in ImageSequence.Iterator(gif):
@@ -54,11 +55,12 @@ def show_start_screen():
 
 
 def animate_gif():
-    global gif_index
+    global gif_index, animation_id
 
-    gif_label.config(image=gif_frames[gif_index])
-    gif_index = (gif_index + 1) % len(gif_frames)
-    root.after(80, animate_gif)  # animation speed
+    if gif_label.winfo_exists():
+        gif_label.config(image=gif_frames[gif_index])
+        gif_index = (gif_index + 1) % len(gif_frames)
+        animation_id = root.after(80, animate_gif)  # animation speed
 
 
 # ----------------------------------------------------------
@@ -147,12 +149,12 @@ def displayProblem():
              font=("Arial", 14, "bold"),
              bg=BG_COLOR, fg="#27ae60").pack(pady=15)
 
-    problem_frame = tk.Frame(root, bg="#ff55ad", relief=tk.RAISED, borderwidth=3)
+    problem_frame = tk.Frame(root, bg="#ff76bd", relief=tk.RAISED, borderwidth=3)
     problem_frame.pack(pady=20, padx=40, fill=tk.BOTH, expand=True)
 
     tk.Label(problem_frame, text=f"{num1} {operation} {num2} = ?",
              font=("Arial", 32, "bold"),
-             bg="#ff55ad", fg=HEADER_COLOR,
+             bg="#ff76bd", fg=HEADER_COLOR,
              pady=30).pack()
 
     tk.Label(root, text="Enter your answer:",
@@ -228,17 +230,17 @@ def displayResults():
                       bg=HEADER_COLOR, fg=LIGHT_TEXT, pady=15)
     header.pack(fill=tk.X)
 
-    results_frame = tk.Frame(root, bg="#ff55ad", relief=tk.RAISED, borderwidth=3)
+    results_frame = tk.Frame(root, bg="#ff76bd", relief=tk.RAISED, borderwidth=3)
     results_frame.pack(pady=30, padx=40, fill=tk.BOTH, expand=True)
 
     tk.Label(results_frame, text="Your Final Result Is:",
              font=("Arial", 16),
-             bg="#ff55ad", fg=TEXT_COLOR,
+             bg="#ff76bd", fg=TEXT_COLOR,
              pady=10).pack()
 
     tk.Label(results_frame, text=f"{score}/100",
              font=("Arial", 48, "bold"),
-             bg="#ff55ad", fg="#27ae60",
+             bg="#ff76bd", fg="#27ae60",
              pady=5).pack()
 
     if score >= 90:
@@ -254,7 +256,7 @@ def displayResults():
 
     tk.Label(results_frame, text=f"{emoji} Grade: {grade} {emoji}",
              font=("Arial", 28, "bold"),
-             bg="#ff55ad", fg=grade_color,
+             bg="#ff76bd", fg=grade_color,
              pady=15).pack()
 
     btn_again = tk.Button(root, text="🔄 Play Again",
@@ -283,6 +285,14 @@ def start_quiz(level):
 
 
 def clear_window():
+    global animation_id
+    # Cancel any running animations
+    if 'animation_id' in globals():
+        try:
+            root.after_cancel(animation_id)
+        except:
+            pass
+    
     for widget in root.winfo_children():
         widget.destroy()
 
