@@ -220,14 +220,29 @@ class StudentManager:
         self.clear_form()
         self.show_form()
 
-        tk.Label(self.form_area, text="Sort field:").grid(row=0, column=0)
+        # Explanation label FIRST - at the top
+        explain = tk.Label(
+            self.form_area,
+            text="Sort Based On:\n"
+                 "Course Work\n"
+                 "Percentage\n"
+                 "Total\n"
+                 "Code",
+            justify="left",
+            font=("Helvetica", 9),
+            bg="#E5CFE6"
+        )
+        explain.grid(row=0, column=0, columnspan=2, sticky="w", pady=(0,10), padx=5)
+
+        # Input fields - moved to row 1 and 2
+        tk.Label(self.form_area, text="Sort field:", bg="#E5CFE6").grid(row=1, column=0, sticky="w", padx=5, pady=5)
         field = tk.Entry(self.form_area, width=20)
-        field.grid(row=0, column=1)
+        field.grid(row=1, column=1, padx=5, pady=5)
         field.insert(0, "percentage")
 
-        tk.Label(self.form_area, text="Order (A/D):").grid(row=1, column=0)
+        tk.Label(self.form_area, text="Order (A/D):", bg="#E5CFE6").grid(row=2, column=0, sticky="w", padx=5, pady=5)
         order = tk.Entry(self.form_area, width=5)
-        order.grid(row=1, column=1)
+        order.grid(row=2, column=1, sticky="w", padx=5, pady=5)
         order.insert(0, "D")
 
         def do_sort():
@@ -245,8 +260,9 @@ class StudentManager:
             messagebox.showinfo("Sorted", "Records sorted.")
             self.clear_form()
 
-        tk.Button(self.form_area, text="Sort", command=do_sort).grid(row=2, column=0, pady=6)
-        tk.Button(self.form_area, text="Cancel", command=self.clear_form).grid(row=2, column=1, pady=6)
+        # Buttons - moved to row 3
+        tk.Button(self.form_area, text="Sort", command=do_sort).grid(row=3, column=0, pady=(15,4), padx=5)
+        tk.Button(self.form_area, text="Cancel", command=self.clear_form).grid(row=3, column=1, pady=(15,4), padx=5)
 
     # Adding Student
     def show_add_form(self):
@@ -262,7 +278,8 @@ class StudentManager:
                  "m3 = Course Mark 3 (20%)\n"
                  "Exam = Final Examination Marks (100)",
             justify="left",
-            font=("Helvetica", 9)
+            font=("Helvetica", 9),
+            bg="#E5CFE6"
         )
         explain.grid(row=0, column=0, columnspan=2, sticky="w", pady=(0,10))
 
@@ -271,7 +288,7 @@ class StudentManager:
         entries = []
 
         for i, l in enumerate(labels):
-            tk.Label(self.form_area, text=l).grid(row=i+1, column=0, sticky="w")
+            tk.Label(self.form_area, text=l, bg="#E5CFE6").grid(row=i+1, column=0, sticky="w")
             e = tk.Entry(self.form_area, width=35)
             e.grid(row=i+1, column=1)
             entries.append(e)
@@ -320,7 +337,7 @@ class StudentManager:
         self.clear_form()
         self.show_form()
 
-        tk.Label(self.form_area, text="Code or name to delete:").grid(row=0, column=0)
+        tk.Label(self.form_area, text="Code or name to delete:", bg="#E5CFE6").grid(row=0, column=0)
         entry = tk.Entry(self.form_area, width=40)
         entry.grid(row=0, column=1)
 
@@ -348,7 +365,7 @@ class StudentManager:
             for i,s in enumerate(matches, start=1):
                 self.log(f"{i}. {s['name']} ({s['code']})")
 
-            tk.Label(self.form_area, text="Enter number:").grid(row=1, column=0)
+            tk.Label(self.form_area, text="Enter number:", bg="#E5CFE6").grid(row=1, column=0)
             idx_entry = tk.Entry(self.form_area, width=5)
             idx_entry.grid(row=1, column=1)
 
@@ -378,7 +395,7 @@ class StudentManager:
         self.clear_form()
         self.show_form()
 
-        tk.Label(self.form_area, text="Code or name to update:").grid(row=0, column=0)
+        tk.Label(self.form_area, text="Code or name to update:", bg="#E5CFE6").grid(row=0, column=0)
         search = tk.Entry(self.form_area, width=40)
         search.grid(row=0, column=1)
 
@@ -396,7 +413,7 @@ class StudentManager:
                 for i,s in enumerate(matches, start=1):
                     self.log(f"{i}. {s['name']} ({s['code']})")
 
-                tk.Label(self.form_area, text="Enter number:").grid(row=1, column=0)
+                tk.Label(self.form_area, text="Enter number:", bg="#E5CFE6").grid(row=1, column=0)
                 idx_entry = tk.Entry(self.form_area, width=5)
                 idx_entry.grid(row=1, column=1)
 
@@ -427,7 +444,7 @@ class StudentManager:
             initial = [student['name'], student['code'], student['m1'], student['m2'], student['m3'], student['exam']]
 
             for i,l in enumerate(labels):
-                tk.Label(self.form_area, text=l).grid(row=2+i, column=0, sticky="w")
+                tk.Label(self.form_area, text=l, bg="#E5CFE6").grid(row=2+i, column=0, sticky="w")
                 e = tk.Entry(self.form_area, width=35)
                 e.grid(row=2+i, column=1)
                 e.insert(0, str(initial[i]))
@@ -483,7 +500,7 @@ class StudentManager:
             messagebox.showerror("Error", "Failed to save file.")
 
 
-#Runnig the App
+#Running the App
 if __name__ == "__main__":
     root = tk.Tk()
     root.configure(bg="#E5CFE6") 
